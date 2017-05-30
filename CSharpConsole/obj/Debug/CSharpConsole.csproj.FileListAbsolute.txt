@@ -1,0 +1,15 @@
+C:\Users\Leslie.Mahasha\documents\visual studio 2015\Projects\CSharpConsole\CSharpConsole\bin\Debug\CSharpConsole.exe.config
+C:\Users\Leslie.Mahasha\documents\visual studio 2015\Projects\CSharpConsole\CSharpConsole\bin\Debug\CSharpConsole.exe
+C:\Users\Leslie.Mahasha\documents\visual studio 2015\Projects\CSharpConsole\CSharpConsole\bin\Debug\CSharpConsole.pdb
+C:\Users\Leslie.Mahasha\documents\visual studio 2015\Projects\CSharpConsole\CSharpConsole\bin\Debug\Json.dll
+C:\Users\Leslie.Mahasha\documents\visual studio 2015\Projects\CSharpConsole\CSharpConsole\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Leslie.Mahasha\documents\visual studio 2015\Projects\CSharpConsole\CSharpConsole\bin\Debug\Persist.dll
+C:\Users\Leslie.Mahasha\documents\visual studio 2015\Projects\CSharpConsole\CSharpConsole\bin\Debug\YamlDotNet.dll
+C:\Users\Leslie.Mahasha\documents\visual studio 2015\Projects\CSharpConsole\CSharpConsole\bin\Debug\Json.pdb
+C:\Users\Leslie.Mahasha\documents\visual studio 2015\Projects\CSharpConsole\CSharpConsole\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Leslie.Mahasha\documents\visual studio 2015\Projects\CSharpConsole\CSharpConsole\bin\Debug\Persist.xml
+C:\Users\Leslie.Mahasha\documents\visual studio 2015\Projects\CSharpConsole\CSharpConsole\bin\Debug\YamlDotNet.pdb
+C:\Users\Leslie.Mahasha\documents\visual studio 2015\Projects\CSharpConsole\CSharpConsole\bin\Debug\YamlDotNet.xml
+C:\Users\Leslie.Mahasha\documents\visual studio 2015\Projects\CSharpConsole\CSharpConsole\obj\Debug\CSharpConsole.csprojResolveAssemblyReference.cache
+C:\Users\Leslie.Mahasha\documents\visual studio 2015\Projects\CSharpConsole\CSharpConsole\obj\Debug\CSharpConsole.exe
+C:\Users\Leslie.Mahasha\documents\visual studio 2015\Projects\CSharpConsole\CSharpConsole\obj\Debug\CSharpConsole.pdb

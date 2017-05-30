@@ -1,0 +1,785 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Persist</name>
+    </assembly>
+    <members>
+        <member name="T:elios.Persist.Archive">
+            <summary>
+            Main Archive class, derive from it if you want to implement your own serializer ( BinaryArchive is missing)
+            </summary>
+            <remarks>this class is not thread safe</remarks>
+        </member>
+        <member name="F:elios.Persist.Archive.ClassKwd">
+            <summary>
+            Attribute value name used when working polymorphic types to specify the object type name
+            </summary>
+        </member>
+        <member name="F:elios.Persist.Archive.ValueKwd">
+            <summary>
+            Fallback attribute value name used when working with list or dictionaries with no <see cref="T:PersistAttribute.ChildName"/> or <see cref="T:PersistAttribute.ValueName"/> specified
+            </summary>
+        </member>
+        <member name="F:elios.Persist.Archive.KeyKwd">
+            <summary>
+            Fallback attribute value name used when working with dictionaries with no <see cref="T:PersistAttribute.KeyName"/> specified
+            </summary>
+        </member>
+        <member name="F:elios.Persist.Archive.ItemKwd">
+            <summary>
+            Fallback attribute value name used when working with lists with no <see cref="T:PersistAttribute.ChildName"/> specified
+            </summary>
+        </member>
+        <member name="F:elios.Persist.Archive.AddressKwd">
+            <summary>
+            Attribute value name used when working with referenced objects using <see cref="T:PersistAttribute.IsReference"/>
+            </summary>
+        </member>
+        <member name="F:elios.Persist.Archive.Culture">
+            <summary>
+            Default serialization Culture
+            </summary>
+        </member>
+        <member name="F:elios.Persist.Archive.MetaTypes">
+            <summary>
+            Metatypes mapping
+            </summary>
+        </member>
+        <member name="P:elios.Persist.Archive.CreationType">
+            <summary>
+            Gets the <see cref="T:System.Type"/> used to create this archive
+            </summary>
+        </member>
+        <member name="M:elios.Persist.Archive.#ctor(System.Type,System.Type[])">
+            <summary>
+            Base class used to serialize and deserialize Archives
+            </summary>
+            <param name="mainType">type of the object you are going to read or write</param>
+            <param name="additionalTypes">additionalTypes that have to be considered when writing or reading</param>
+        </member>
+        <member name="M:elios.Persist.Archive.WriteMain(System.Object,System.String)">
+            <summary>
+            Call this method on a derived type to begin the serialization of the archive, this will start a subsecuent call of Being/End Write object/value abstract methods
+            </summary>
+            <param name="data">the object you want to serialize</param>
+            <param name="rootName">the root name of the document (usually used only for xml archives) </param>
+        </member>
+        <member name="M:elios.Persist.Archive.ReadMain">
+            <summary>
+            Call this method on a derived type to begin the deserialization of the archive, this will start a subsecuent call of Being/End Read object/value abstract methods
+            </summary>
+            <returns>returns the deserialized object</returns>
+        </member>
+        <member name="M:elios.Persist.Archive.ResolveMain(System.Object)">
+            <summary>
+            Call this method on a derived type to perform the second step on the deserialization of an archive that uses references to solve them
+            </summary>
+            <param name="obj"></param>
+        </member>
+        <member name="M:elios.Persist.Archive.Write(System.IO.Stream,System.Object,System.String)">
+            <summary>
+            Serializes the specified data into the stream
+            </summary>
+            <param name="target">target serialization stream</param>
+            <param name="data">data to serialize</param>
+            <param name="rootName">root name of the document (eg. xml doc rootname)</param>
+        </member>
+        <member name="M:elios.Persist.Archive.Write(System.String,System.Object,System.String)">
+            <summary>
+            Serializes the specified data into a file
+            </summary>
+            <param name="path">target serialization file</param>
+            <param name="data">data to serialize</param>
+            <param name="rootName">root name of the document (eg. xml doc rootname)</param>
+        </member>
+        <member name="M:elios.Persist.Archive.Read(System.IO.Stream)">
+            <summary>
+            Deserializes the archive contained by the specified <see cref="T:System.IO.Stream"/>
+            </summary>
+            <param name="source">the stream that contains the <see cref="T:elios.Persist.Archive"/> to deserialize</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.Archive.Read(System.String)">
+            <summary>
+            Deserializes the archive contained in the specified filePath
+            </summary>
+            <param name="filePath">the stream that contains the <see cref="T:elios.Persist.Archive"/> to deserialize</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.Archive.BeginReadObject(System.String)">
+            <summary>
+            A nested object begins to be read
+            </summary>
+            <param name="name">object name</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.Archive.BeginWriteObject(System.String)">
+            <summary>
+            A nested object begins to be written
+            </summary>
+            <param name="name">object name</param>
+        </member>
+        <member name="M:elios.Persist.Archive.EndReadObject(System.Object)">
+            <summary>
+            Ends reading a nested object
+            </summary>
+            <param name="obj">object just read for bookeeping</param>
+        </member>
+        <member name="M:elios.Persist.Archive.EndWriteObject(System.Int64)">
+            <summary>
+            Ends writing a nested object
+            </summary>
+            <param name="id">an unique id for the object for bookeeping</param>
+        </member>
+        <member name="M:elios.Persist.Archive.ReadValue(System.String,System.Type)">
+            <summary>
+            Reads a value for the current nested object and cast it to the specified type
+            </summary>
+            <param name="name">value name</param>
+            <param name="type">value type</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.Archive.WriteValue(System.String,System.Object)">
+            <summary>
+            writes a value for the current nested object
+            </summary>
+            <param name="name">value name</param>
+            <param name="data">value</param>
+        </member>
+        <member name="M:elios.Persist.Archive.WriteReference(System.String,System.Int64)">
+            <summary>
+            Writes a reference of an object instead of its value
+            </summary>
+            <param name="name">name for the reference</param>
+            <param name="id">id of the reference</param>
+        </member>
+        <member name="M:elios.Persist.Archive.ReadReference(System.String)">
+            <summary>
+            reads a reference
+            </summary>
+            <param name="name">name of the reference</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.Archive.GetObjectChildrenCount(System.String)">
+            <summary>
+            when reading or resolving queries for the number of children of the current object
+            </summary>
+            <param name="name">filter string children name</param>
+            <returns></returns>
+        </member>
+        <member name="P:elios.Persist.Archive.IsCurrentObjectContainer">
+            <summary>
+            Gets or sets a value indicating whether the current object needs to be a container
+            </summary>
+            <value>
+            <c>true</c> if the current object needs to be a container otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:elios.Persist.NodeAttribute">
+            <summary>
+            An attribute is composed by a <see cref="P:elios.Persist.NodeAttribute.Name"/> and a <see cref="P:elios.Persist.NodeAttribute.Value"/>
+            </summary>
+        </member>
+        <member name="P:elios.Persist.NodeAttribute.Name">
+            <summary>
+            Name of the attribute
+            </summary>
+        </member>
+        <member name="P:elios.Persist.NodeAttribute.Value">
+            <summary>
+            value of the attribute
+            </summary>
+        </member>
+        <member name="M:elios.Persist.NodeAttribute.#ctor(System.String,System.String)">
+            <summary>
+            creates a <see cref="T:elios.Persist.NodeAttribute"/> with the specified name and value
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:elios.Persist.NodeAttribute.ToString">
+            <summary>
+            looks like { Name , Value }
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:elios.Persist.Node">
+            <summary>
+            Node used to represent Archives
+            </summary>
+        </member>
+        <member name="P:elios.Persist.Node.Name">
+            <summary>
+            name of the node
+            </summary>
+        </member>
+        <member name="P:elios.Persist.Node.IsContainer">
+            <summary>
+            is the node a container
+            </summary>
+        </member>
+        <member name="P:elios.Persist.Node.Attributes">
+            <summary>
+            attributes of the node
+            </summary>
+        </member>
+        <member name="P:elios.Persist.Node.Nodes">
+            <summary>
+            children nodes for this node
+            </summary>
+        </member>
+        <member name="M:elios.Persist.Node.#ctor">
+            <summary>
+            Creates a node
+            </summary>
+        </member>
+        <member name="M:elios.Persist.Node.#ctor(elios.Persist.Node)">
+            <summary>
+            Copy constructor
+            </summary>
+            <param name="copyNode"></param>
+        </member>
+        <member name="M:elios.Persist.Node.ToString">
+            <summary>
+            Shows the node name and its attributes names and values
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:elios.Persist.JsonArchive">
+            <summary>
+            Json Serializer
+            <remarks>this class is thread safe</remarks>
+            </summary>
+        </member>
+        <member name="P:elios.Persist.JsonArchive.PrettyJson">
+            <summary>
+            Gets or sets a value indicating whether to stream a pretty json
+            </summary>
+        </member>
+        <member name="M:elios.Persist.JsonArchive.#ctor(System.Type,System.Type[])">
+            <summary>
+            Initializes <see cref="T:elios.Persist.JsonArchive"/> that reads archives of the specified type
+            </summary>
+            <param name="type"></param>
+            <param name="additionalTypes"></param>
+        </member>
+        <member name="M:elios.Persist.JsonArchive.WriteNode(System.IO.Stream,elios.Persist.Node)">
+            <summary>
+            Writes a node to a json <see cref="T:System.IO.Stream"/>
+            </summary>
+            <param name="target"></param>
+            <param name="root"></param>
+        </member>
+        <member name="M:elios.Persist.JsonArchive.ParseNode(System.IO.Stream)">
+            <summary>
+            Parses a node form the <see cref="T:System.IO.Stream"/>
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.JsonArchive.LoadNode(System.IO.Stream)">
+            <summary>
+            Parses a node from a json <see cref="T:System.IO.Stream"/>
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.JsonArchive.SaveNode(System.IO.Stream,elios.Persist.Node,System.Boolean)">
+            <summary>
+            writes a <see cref="T:elios.Persist.Node"/> to a json stream
+            </summary>
+            <param name="target">target <see cref="T:System.IO.Stream"/></param>
+            <param name="node"></param>
+            <param name="prettyPrint">breaklines and everything?</param>
+        </member>
+        <member name="T:elios.Persist.PersistAttribute">
+            <summary>
+            Preferences used to personalize an object serialization and deserialization members
+            </summary>
+        </member>
+        <member name="P:elios.Persist.PersistAttribute.Name">
+            <summary>
+            name of the member, if not set the property or field name will be used
+            </summary>
+        </member>
+        <member name="P:elios.Persist.PersistAttribute.IsReference">
+            <summary>
+            For complex types treats it as a reference only storing its id to be serialized elsewhere in the tree.
+            For lists and dictionaries does the same thing but just for their values.
+            </summary>
+        </member>
+        <member name="P:elios.Persist.PersistAttribute.ChildName">
+            <summary>
+            Opcional name for items on a dictionary or list
+            </summary>
+        </member>
+        <member name="P:elios.Persist.PersistAttribute.KeyName">
+            <summary>
+            Opctional name for key on dictionaries only
+            </summary>
+        </member>
+        <member name="P:elios.Persist.PersistAttribute.ValueName">
+            <summary>
+            Opctional name for value on dictionaries only
+            </summary>
+        </member>
+        <member name="P:elios.Persist.PersistAttribute.Ignore">
+            <summary>
+            Ignores the specified field since public properties are serialized by default
+            </summary>
+        </member>
+        <member name="P:elios.Persist.PersistAttribute.RunConstructor">
+            <summary>
+            Gets or sets a value indicating whether to use the parameterless constructor of the type. default value is true
+            </summary>
+            <value>
+             if true <see cref="T:Activator.CreateInstance"/>  will be used otherwise <see cref="T:FormatterServices.GetUninitializedObject"/>
+            </value>
+        </member>
+        <member name="M:elios.Persist.PersistAttribute.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:elios.Persist.PersistAttribute.#ctor(System.String)">
+            <summary>
+            Creates a persist attribute with the specified name
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="T:elios.Persist.ArchiveFormat">
+            <summary>
+            Supoorted archive formats
+            </summary>
+        </member>
+        <member name="F:elios.Persist.ArchiveFormat.Guess">
+            <summary>
+            Guesses the archive format
+            </summary>
+        </member>
+        <member name="F:elios.Persist.ArchiveFormat.Xml">
+            <summary>
+            Xml archive format
+            </summary>
+        </member>
+        <member name="F:elios.Persist.ArchiveFormat.Json">
+            <summary>
+            Json archive format
+            </summary>
+        </member>
+        <member name="F:elios.Persist.ArchiveFormat.Yaml">
+            <summary>
+            Yaml archive format
+            </summary>
+        </member>
+        <member name="T:elios.Persist.ArchiveUtils">
+            <summary>
+            Helper functions to read and write archives
+            </summary>
+        </member>
+        <member name="M:elios.Persist.ArchiveUtils.Write(System.IO.Stream,System.Object,elios.Persist.ArchiveFormat,System.String,System.Type[])">
+            <summary>
+            serializes an object to an archive
+            </summary>
+            <param name="target">target stream</param>
+            <param name="data">object to serialize</param>
+            <param name="format">format to use</param>
+            <param name="rootName">xml rootname</param>
+            <param name="additionalTypes">additional serialization types</param>
+        </member>
+        <member name="M:elios.Persist.ArchiveUtils.Write(System.String,System.Object,elios.Persist.ArchiveFormat,System.String,System.Type[])">
+            <summary>
+            serializes an object to an archive
+            </summary>
+            <param name="filePath">target file</param>
+            <param name="data">object to serialize</param>
+            <param name="format">format to use if guess guesses the format you want to use based on the file extension</param>
+            <param name="rootName">xml rootname</param>
+            <param name="additionalTypes">additional serialization types</param>
+        </member>
+        <member name="M:elios.Persist.ArchiveUtils.Write(System.Object,System.String,System.Type[])">
+            <summary>
+            serializes an object to a <see cref="T:elios.Persist.Node"/>
+            </summary>
+            <param name="data">object to serialize</param>
+            <param name="rootName">Name of the root (usually for xml archives)</param>
+            <param name="additionalTypes">The polymorphic types.</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.ArchiveUtils.Read(System.IO.Stream,System.Type,elios.Persist.ArchiveFormat,System.Type[])">
+            <summary>
+            deserializes an archive
+            </summary>
+            <param name="source">source stream</param>
+            <param name="type">object type</param>
+            <param name="format">archive format</param>
+            <param name="additionalTypes">additional deserialization types</param>
+            <returns>the deserialized object</returns>
+        </member>
+        <member name="M:elios.Persist.ArchiveUtils.Read(System.String,System.Type,elios.Persist.ArchiveFormat,System.Type[])">
+            <summary>
+            deserializes an archive
+            </summary>
+            <param name="filePath">source file</param>
+            <param name="type">object type</param>
+            <param name="format">archive format</param>
+            <param name="additionalTypes">additional deserialization types</param>
+            <returns>the deserialized object</returns>
+        </member>
+        <member name="M:elios.Persist.ArchiveUtils.Read(elios.Persist.Node,System.Type,System.Type[])">
+            <summary>
+            Deserializes the arhive contained in the specified <see cref="T:elios.Persist.Node"/>
+            </summary>
+            <param name="node">The node.</param>
+            <param name="type">The type this node represents</param>
+            <param name="additionalTypes">The polymorphic types.</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.ArchiveUtils.Read``1(System.IO.Stream,elios.Persist.ArchiveFormat,System.Type[])">
+            <summary>
+            deserializes an archive
+            </summary>
+            <typeparam name="T"> is the type of the deserialized object</typeparam>
+            <param name="source">source stream</param>
+            <param name="format">archive format</param>
+            <param name="additionalTypes">additional deserialization types</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.ArchiveUtils.Read``1(System.String,elios.Persist.ArchiveFormat,System.Type[])">
+            <summary>
+            deserializes an archive
+            </summary>
+            <typeparam name="T"> is the type of the deserialized object</typeparam>
+            <param name="filePath">source file</param>
+            <param name="format">archive format</param>
+            <param name="additionalTypes">additional deserialization types</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.ArchiveUtils.Read``1(elios.Persist.Node,System.Type[])">
+            <summary>
+            Deserializes the arhive contained in the specified <see cref="T:elios.Persist.Node"/>
+            </summary>
+            <typeparam name="T">the type this node represents</typeparam>
+            <param name="node">The node.</param>
+            <param name="additionalTypes">The polymorphic types.</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.ArchiveUtils.Convert(System.IO.Stream,elios.Persist.ArchiveFormat,elios.Persist.ArchiveFormat,System.String)">
+            <summary>
+            converts an archive to a new format and returns it as a string
+            </summary>
+            <param name="source">source <see cref="T:System.IO.Stream"/></param>
+            <param name="newFormat">new format</param>
+            <param name="sourceFormat">source format</param>
+            <param name="rootName">root name (for xml)</param>
+            <remarks>if the newformat and the sourceformat are the same the conversion stil takes place</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.ArchiveUtils.Convert(System.String,elios.Persist.ArchiveFormat,elios.Persist.ArchiveFormat,System.String)">
+            <summary>
+            converts an archive to a new format and returns it as a string
+            </summary>
+            <param name="filePath">source file</param>
+            <param name="newFormat">new format</param>
+            <param name="sourceFormat">source format</param>
+            <param name="rootName">root name (for xml)</param>
+            <remarks>if the newformat and the sourceformat are the same the conversion stil takes place</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.ArchiveUtils.SaveNode(System.IO.Stream,elios.Persist.Node,elios.Persist.ArchiveFormat)">
+            <summary>
+            writes the specified node to a <see cref="T:System.IO.Stream"/>
+            </summary>
+            <param name="target">target stream</param>
+            <param name="node">node to write</param>
+            <param name="format">format</param>
+        </member>
+        <member name="M:elios.Persist.ArchiveUtils.SaveNode(System.String,elios.Persist.Node,elios.Persist.ArchiveFormat)">
+            <summary>
+            writes the specified node to a file
+            </summary>
+            <param name="filePath">target file</param>
+            <param name="node">node to write</param>
+            <param name="format">format</param>
+        </member>
+        <member name="M:elios.Persist.ArchiveUtils.LoadNode(System.IO.Stream,elios.Persist.ArchiveFormat)">
+            <summary>
+            Parses the <see cref="T:System.IO.Stream"/> to a Node
+            </summary>
+            <param name="source">source stream</param>
+            <param name="format">format</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.ArchiveUtils.LoadNode(System.String,elios.Persist.ArchiveFormat)">
+            <summary>
+            Parses the file to a node
+            </summary>
+            <param name="filePath">source file</param>
+            <param name="format">file format</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.ArchiveUtils.GuessFormat(System.String)">
+            <summary>
+            guesses the archive format of a file by extension
+            </summary>
+            <param name="filePath"></param>
+            <remarks>if the extension is unknow it returns <see cref="T:ArchiveFormat.Guess"/></remarks>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.ArchiveUtils.GuessFormat(System.IO.Stream)">
+            <summary>
+            guesses the archive format of a <see cref="T:System.IO.Stream"/> by parsing it.
+            </summary>
+            <param name="source">source <see cref="T:System.IO.Stream"/></param>
+            <remarks>if the extension is unknow it returns <see cref="T:ArchiveFormat.Guess"/></remarks>
+            <returns></returns>
+        </member>
+        <member name="T:elios.Persist.PersistIncludeAttribute">
+            <summary>
+            Allows the <see cref="T:elios.Persist.Archive"/> to recognize a type when it serializes or deserializes an object
+            </summary>
+            <seealso cref="T:System.Attribute" />
+        </member>
+        <member name="P:elios.Persist.PersistIncludeAttribute.AdditionalTypes">
+            <summary>
+            Gets the additional types.
+            </summary>
+            <value>
+            The additional types.
+            </value>
+        </member>
+        <member name="M:elios.Persist.PersistIncludeAttribute.#ctor(System.Type[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:elios.Persist.PersistIncludeAttribute"/> class.
+            </summary>
+            <param name="additionalTypes">The additional types.</param>
+        </member>
+        <member name="T:elios.Persist.TreeArchive">
+            <summary>
+            Creates Archives in Tree formats like (xml, json, yaml), derive from it if you want to support a new tree format
+            </summary>
+            <remarks>this class is thread safe</remarks>
+            <seealso cref="T:elios.Persist.Archive" />
+        </member>
+        <member name="M:elios.Persist.TreeArchive.#ctor(System.Type,System.Type[])">
+            <summary>
+            abstract class constructor
+            </summary>
+            <param name="type"></param>
+            <param name="additionalTypes"></param>
+        </member>
+        <member name="M:elios.Persist.TreeArchive.WriteNode(System.IO.Stream,elios.Persist.Node)">
+            <summary>
+            Writes a node to the <see cref="T:System.IO.Stream"/>
+            </summary>
+            <param name="target"></param>
+            <param name="root"></param>
+        </member>
+        <member name="M:elios.Persist.TreeArchive.ParseNode(System.IO.Stream)">
+            <summary>
+            Parses a node form the <see cref="T:System.IO.Stream"/>
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.TreeArchive.Write(System.String,System.Object,System.String)">
+            <summary>
+            Writes the specified target.
+            </summary>
+            <param name="target">The target.</param>
+            <param name="data">The data.</param>
+            <param name="rootName">Name of the root.</param>
+        </member>
+        <member name="M:elios.Persist.TreeArchive.Write(System.IO.Stream,System.Object,System.String)">
+            <summary>
+            Serializes the specified data into the stream
+            </summary>
+            <param name="target">target serialization stream</param>
+            <param name="data">data to serialize</param>
+            <param name="rootName">root name of the document (eg. xml doc rootname)</param>
+        </member>
+        <member name="M:elios.Persist.TreeArchive.Write(System.Object,System.String)">
+            <summary>
+            Serializes the specified data into a Node.
+            </summary>
+            <param name="data">The data.</param>
+            <param name="rootName">Name of the root (usually for xml archives)</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.TreeArchive.BeginWriteObject(System.String)">
+            <summary>
+            A nested object begins to be written
+            </summary>
+            <param name="name">object name</param>
+        </member>
+        <member name="M:elios.Persist.TreeArchive.EndWriteObject(System.Int64)">
+            <summary>
+            Ends writing a nested object
+            </summary>
+            <param name="id">an unique id for the object for bookeeping</param>
+        </member>
+        <member name="M:elios.Persist.TreeArchive.WriteReference(System.String,System.Int64)">
+            <summary>
+            Writes a reference of an object instead of its value
+            </summary>
+            <param name="name">name for the reference</param>
+            <param name="id">id of the reference</param>
+        </member>
+        <member name="M:elios.Persist.TreeArchive.WriteValue(System.String,System.Object)">
+            <summary>
+            writes a value for the current nested object
+            </summary>
+            <param name="name">value name</param>
+            <param name="data">value</param>
+        </member>
+        <member name="M:elios.Persist.TreeArchive.Read(System.String)">
+            <summary>
+            Deserializes the archive contained in the specified filePath
+            </summary>
+            <param name="filePath">the stream that contains the <see cref="T:elios.Persist.Archive" /> to deserialize</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.TreeArchive.Read(System.IO.Stream)">
+            <summary>
+            Deserializes the archive contained by the specified <see cref="T:System.IO.Stream" />
+            </summary>
+            <param name="source">the stream that contains the <see cref="T:elios.Persist.Archive" /> to deserialize</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.TreeArchive.Read(elios.Persist.Node)">
+            <summary>
+            Deserializes the arhive contained in the specified <see cref="T:elios.Persist.Node"/>
+            </summary>
+            <param name="node">The node.</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.TreeArchive.BeginReadObject(System.String)">
+            <summary>
+            A nested object begins to be read
+            </summary>
+            <param name="name">object name</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.TreeArchive.EndReadObject(System.Object)">
+            <summary>
+            Ends the read object.
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:elios.Persist.TreeArchive.ReadValue(System.String,System.Type)">
+            <summary>
+            Reads a value for the current nested object and cast it to the specified type
+            </summary>
+            <param name="name">value name</param>
+            <param name="type">value type</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.TreeArchive.ReadReference(System.String)">
+            <summary>
+            reads a reference
+            </summary>
+            <param name="name">name of the reference</param>
+            <returns></returns>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">unresolved reference  + id</exception>
+        </member>
+        <member name="M:elios.Persist.TreeArchive.GetObjectChildrenCount(System.String)">
+            <summary>
+            when reading or resolving queries for the number of children of the current object
+            </summary>
+            <param name="name">filter string children name</param>
+            <returns></returns>
+        </member>
+        <member name="P:elios.Persist.TreeArchive.IsCurrentObjectContainer">
+            <summary>
+            Gets or sets a value indicating whether the current object needs to be a container
+            </summary>
+            <value>
+            <c>true</c> if the current object needs to be a container otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:elios.Persist.XmlArchive">
+            <summary>
+            Xml serializer
+            </summary>
+            <remarks>this class is thread safe</remarks>
+            <seealso cref="T:elios.Persist.TreeArchive" />
+        </member>
+        <member name="M:elios.Persist.XmlArchive.#ctor(System.Type,System.Type[])">
+            <summary>
+            Initializes <see cref="T:elios.Persist.XmlArchive"/> that reads archives of the specified type
+            </summary>
+            <param name="type"></param>
+            <param name="additionalTypes"></param>
+        </member>
+        <member name="M:elios.Persist.XmlArchive.WriteNode(System.IO.Stream,elios.Persist.Node)">
+            <summary>
+            Writes a node to the <see cref="T:System.IO.Stream" />
+            </summary>
+            <param name="target"></param>
+            <param name="root"></param>
+        </member>
+        <member name="M:elios.Persist.XmlArchive.ParseNode(System.IO.Stream)">
+            <summary>
+            Parses a node form the <see cref="T:System.IO.Stream" />
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.XmlArchive.SaveNode(System.IO.Stream,elios.Persist.Node)">
+            <summary>
+            Writes a node to a xml <see cref="T:System.IO.Stream"/>
+            </summary>
+            <param name="target">The target.</param>
+            <param name="node">The node.</param>
+        </member>
+        <member name="M:elios.Persist.XmlArchive.LoadNode(System.IO.Stream)">
+            <summary>
+            Parses a node from a xml <see cref="T:System.IO.Stream"/>
+            </summary>
+            <param name="source">The source.</param>
+            <returns></returns>
+        </member>
+        <member name="T:elios.Persist.YamlArchive">
+            <summary>
+            Yaml Serializer
+            </summary>
+            <remarks>this class is thread safe</remarks>
+            <seealso cref="T:elios.Persist.TreeArchive" />
+        </member>
+        <member name="M:elios.Persist.YamlArchive.#ctor(System.Type,System.Type[])">
+            <summary>
+            Initializes <see cref="T:elios.Persist.YamlArchive"/> that reads archives of the specified type
+            </summary>
+            <param name="type"></param>
+            <param name="additionalTypes"></param>
+        </member>
+        <member name="M:elios.Persist.YamlArchive.WriteNode(System.IO.Stream,elios.Persist.Node)">
+            <summary>
+            Writes a node to the <see cref="T:System.IO.Stream" />
+            </summary>
+            <param name="target"></param>
+            <param name="root"></param>
+        </member>
+        <member name="M:elios.Persist.YamlArchive.ParseNode(System.IO.Stream)">
+            <summary>
+            Parses a node form the <see cref="T:System.IO.Stream" />
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.YamlArchive.LoadNode(System.IO.Stream)">
+            <summary>
+            Parses a node from a yaml <see cref="T:System.IO.Stream"/>
+            </summary>
+            <param name="source">The source.</param>
+            <returns></returns>
+        </member>
+        <member name="M:elios.Persist.YamlArchive.SaveNode(System.IO.Stream,elios.Persist.Node)">
+            <summary>
+            writes a <see cref="T:elios.Persist.Node"/> to a yaml stream
+            </summary>
+            <param name="target">The target.</param>
+            <param name="node">The node.</param>
+        </member>
+    </members>
+</doc>

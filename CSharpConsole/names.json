@@ -1,0 +1,86 @@
+[
+  {
+    "firstName": "Maria",
+    "surname": "Mahasha",
+    "age": 50,
+    "title": "Makhazi"
+  },
+  {
+    "firstName": "Meriah",
+    "surname": "Shayi",
+    "age": 68,
+    "title": "Queen"
+  },
+  {
+    "age": 99,
+    "firstName": "Elizabeth",
+    "surname": "Mmola",
+    "title": "Mother Queen"
+  },
+  {
+    "firstName": "Freddie",
+    "surname": "Mahashe",
+    "age": 75,
+    "title": "Chief"
+  },
+  {
+    "firstName": "Ngwako",
+    "surname": "Rabotata",
+    "age": 32,
+    "title": "Advocate"
+  },
+  {
+    "firstName": "Dennis",
+    "surname": "Mamba",
+    "age": 21,
+    "title": "Developer"
+  },
+  {
+    "firstName": "Joseph",
+    "surname": "Bloomberg",
+    "age": 28,
+    "title": "Doctor"
+  },
+  {
+    "firstName": "Nicky",
+    "surname": "Newton King",
+    "age": 45,
+    "title": "CEO"
+  },
+  {
+    "firstName": "Lesego",
+    "surname": "Pilane",
+    "age": 30,
+    "title": "Engineer"
+  },
+  {
+    "firstName": "Zachariah",
+    "surname": "Malatjie",
+    "age": 50,
+    "title": "Operator"
+  },
+  {
+    "firstName": "Lynn",
+    "surname": "Brown",
+    "age": 52,
+    "title": "Minister"
+  },
+  {
+    "firstName": "Arnold",
+    "surname": "Lekwatiko",
+    "age": 19,
+    "title": "Nephew"
+  },
+  {
+    "firstName": "Kamogelo",
+    "surname": "Mahasha",
+    "age": 11,
+    "title": "Nephew"
+  },
+  {
+    "firstName": "Sizwe",
+    "surname": "Malatjie",
+    "age": 101,
+    "title": "Doctor"
+  }
+]
