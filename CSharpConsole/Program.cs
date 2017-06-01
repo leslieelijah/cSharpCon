@@ -10,7 +10,7 @@ namespace CSharpConsole
     {
         public static void Main(string[] args)
         {
-           setter();
+           //setter();
         }
 
         public static void setter()
